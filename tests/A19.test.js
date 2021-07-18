@@ -19,7 +19,6 @@ describe('# A19: 建立 User Profile', function() {
         helpers, 'getUser'
       ).returns({id: 1, Followings: []});
 
-      await db.User.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
     })
 
@@ -35,9 +34,11 @@ describe('# A19: 建立 User Profile', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
-      await db.User.destroy({where: {},truncate: true})
-    })
 
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.sequelize.truncate()
+    })
   })
 
   context('# [瀏覽編輯 Profile 頁面]', () => {
@@ -49,7 +50,6 @@ describe('# A19: 建立 User Profile', function() {
         helpers, 'getUser'
       ).returns({id: 1});
 
-      await db.User.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
     })
 
@@ -71,7 +71,9 @@ describe('# A19: 建立 User Profile', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
-      await db.User.destroy({where: {},truncate: true})
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.sequelize.truncate()
     })
 
   })
@@ -85,7 +87,6 @@ describe('# A19: 建立 User Profile', function() {
         helpers, 'getUser'
       ).returns({id: 1});
 
-      await db.User.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
     })
 
@@ -105,7 +106,9 @@ describe('# A19: 建立 User Profile', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
-      await db.User.destroy({where: {},truncate: true})
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.sequelize.truncate()
     })
 
   })
