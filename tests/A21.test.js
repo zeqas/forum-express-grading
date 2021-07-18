@@ -19,10 +19,6 @@ describe('# A21: Like / Unlike', function() {
         helpers, 'getUser'
       ).returns({id: 1, Followings: []});
 
-      await db.User.destroy({where: {},truncate: true})
-      await db.Category.destroy({where: {},truncate: true})
-      await db.Restaurant.destroy({where: {},truncate: true})
-      await db.Like.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
       await db.Category.create({
         name: 'name'
@@ -53,11 +49,11 @@ describe('# A21: Like / Unlike', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
-      await db.User.destroy({where: {},truncate: true})
-      await db.Category.destroy({where: {},truncate: true})
-      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Favorite.destroy({where: {},truncate: true})
       await db.Like.destroy({where: {},truncate: true})
-    })
+      await db.User.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})    })
 
   })
 
@@ -71,10 +67,6 @@ describe('# A21: Like / Unlike', function() {
         helpers, 'getUser'
       ).returns({id: 1, Followings: []});
 
-      await db.User.destroy({where: {},truncate: true})
-      await db.Category.destroy({where: {},truncate: true})
-      await db.Restaurant.destroy({where: {},truncate: true})
-      await db.Like.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
       await db.Category.create({
         name: 'name'
@@ -109,8 +101,10 @@ describe('# A21: Like / Unlike', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Favorite.destroy({where: {},truncate: true})
+      await db.Like.destroy({where: {},truncate: true})
       await db.User.destroy({where: {},truncate: true})
-      await db.Category.destroy({where: {},truncate: true})
       await db.Restaurant.destroy({where: {},truncate: true})
     })
 

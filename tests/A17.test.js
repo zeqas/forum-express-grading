@@ -19,7 +19,6 @@ describe('# A17: 使用者權限管理', function() {
         helpers, 'getUser'
       ).returns({id: 1, isAdmin: true});
 
-      await db.User.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
     })
 
@@ -35,7 +34,9 @@ describe('# A17: 使用者權限管理', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
-      await db.User.destroy({where: {},truncate: true})
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.sequelize.truncate()
     })
 
   })
@@ -49,7 +50,6 @@ describe('# A17: 使用者權限管理', function() {
         helpers, 'getUser'
       ).returns({id: 1, isAdmin: true});
 
-      await db.User.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1', isAdmin: false})
     })
 
@@ -72,7 +72,9 @@ describe('# A17: 使用者權限管理', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
-      await db.User.destroy({where: {},truncate: true})
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.sequelize.truncate()
     })
 
   })

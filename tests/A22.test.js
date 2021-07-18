@@ -22,12 +22,9 @@ describe('# A22: TOP 10 人氣餐廳 ', function() {
         helpers, 'getUser'
       ).returns({id: 1, Followings: [], FavoritedRestaurants: []});
 
-      await db.User.destroy({where: {},truncate: true})
-      await db.Category.destroy({where: {},truncate: true})
-      await db.Restaurant.destroy({where: {},truncate: true})
-      await db.Favorite.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
       await db.User.create({name: 'User2'})
+      await db.Category.create({name: 'Category1'})
       await db.Restaurant.create({
         name: 'Restaurant1',
         tel: 'tel',
@@ -70,7 +67,12 @@ describe('# A22: TOP 10 人氣餐廳 ', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Favorite.destroy({where: {},truncate: true})
+      await db.Like.destroy({where: {},truncate: true})
       await db.User.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.Category.destroy({where: {},truncate: true})
     })
 
   })
@@ -84,12 +86,9 @@ describe('# A22: TOP 10 人氣餐廳 ', function() {
         helpers, 'getUser'
       ).returns({id: 1, Followings: [], FavoritedRestaurants: []});
 
-      await db.User.destroy({where: {},truncate: true})
-      await db.Category.destroy({where: {},truncate: true})
-      await db.Restaurant.destroy({where: {},truncate: true})
-      await db.Favorite.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
       await db.User.create({name: 'User2'})
+      await db.Category.create({name: 'Category1'})
       await db.Restaurant.create({
         name: 'Restaurant1',
         tel: 'tel',
@@ -142,7 +141,12 @@ describe('# A22: TOP 10 人氣餐廳 ', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Favorite.destroy({where: {},truncate: true})
+      await db.Like.destroy({where: {},truncate: true})
       await db.User.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.Category.destroy({where: {},truncate: true})
     })
 
   })
