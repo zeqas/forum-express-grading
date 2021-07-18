@@ -19,11 +19,6 @@ describe('# A23: 【選修】更新 User Profile ', function() {
         helpers, 'getUser'
       ).returns({id: 1, Followings: []});
 
-      await db.User.destroy({where: {},truncate: true})
-      await db.Category.destroy({where: {},truncate: true})
-      await db.Restaurant.destroy({where: {},truncate: true})
-      await db.Favorite.destroy({where: {},truncate: true})
-      await db.Comment.destroy({where: {},truncate: true})
       await db.User.create({name: 'User1'})
       await db.User.create({name: 'User1'})
       await db.User.create({name: 'User2'})
@@ -77,7 +72,12 @@ describe('# A23: 【選修】更新 User Profile ', function() {
     after(async () => {
       this.ensureAuthenticated.restore();
       this.getUser.restore();
+      await db.Comment.destroy({where: {},truncate: true})
+      await db.Favorite.destroy({where: {},truncate: true})
+      await db.Like.destroy({where: {},truncate: true})
       await db.User.destroy({where: {},truncate: true})
+      await db.Restaurant.destroy({where: {},truncate: true})
+      await db.Category.destroy({where: {},truncate: true})
     })
 
   })
