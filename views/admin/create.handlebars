@@ -1,8 +1,8 @@
 
 {{#if restaurant}}
-  <form action="/admin/restaurants/{{restaurant.id}}?_method=PUT" method="POST">
+  <form action="/admin/restaurants/{{restaurant.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
 {{else}}
-  <form action="/admin/restaurants" method="POST">
+  <form action="/admin/restaurants" method="POST" enctype="multipart/form-data">
 {{/if}}
   <div class="form-group">
     <label for="name">Name</label>
@@ -31,4 +31,8 @@
   </div>
 
   <button type="submit" class="btn btn-primary">Submit</button>
+  <div class="form-group">
+    <label for="image">Image</label>
+    <input type="file" class="form-control-file" id="image" name="image">
+  </div>
 </form>
