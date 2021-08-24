@@ -3,6 +3,8 @@ const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const flash = require('connect-flash')
 const session = require('express-session')
+const methodOverride = require('method-override')
+
 const passport = require('./config/passport')
 
 const db = require('./models') // 引入資料庫
@@ -23,10 +25,7 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`)
-})
+app.use(methodOverride('_method'))
 
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success_messages')
@@ -35,7 +34,10 @@ app.use((req, res, next) => {
   next()
 })
 
-// 引入 routes 並將 app 傳進去，讓 routes 可以用 app 這個物件來指定路由
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}!`)
+})
+
 require('./routes')(app, passport)
 
 module.exports = app
