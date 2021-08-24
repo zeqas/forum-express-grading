@@ -23,7 +23,7 @@ const adminController = {
 
     const { file } = req
     if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (err, img) => {
         return Restaurant.create({
           name: req.body.name,
@@ -31,7 +31,7 @@ const adminController = {
           address: req.body.address,
           opening_hours: req.body.opening_hours,
           description: req.body.description,
-          image: file ? img.data.link : null,
+          image: file ? img.data.link : null
         }).then((restaurant) => {
           req.flash('success_messages', 'restaurant was successfully created')
           return res.redirect('/admin/restaurants')
@@ -53,13 +53,22 @@ const adminController = {
   },
   // Read the restaurant
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { raw: true }).then(restaurant => {
+    return Restaurant.findByPk(req.params.id, {
+      raw: true
+    }).then(restaurant => {
       return res.render('admin/restaurant', {
         restaurant: restaurant
       })
     })
   },
   // Update
+  editRestaurant: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      raw: true
+    }).then(restaurant => {
+      return res.render('admin/create', { restaurant: restaurant })
+    })
+  },
   putRestaurant: (req, res) => {
     if (!req.body.name) {
       req.flash('error_messages', "name didn't exist")
@@ -68,7 +77,7 @@ const adminController = {
 
     const { file } = req
     if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (err, img) => {
         return Restaurant.findByPk(req.params.id)
           .then((restaurant) => {
@@ -78,7 +87,7 @@ const adminController = {
               address: req.body.address,
               opening_hours: req.body.opening_hours,
               description: req.body.description,
-              image: file ? img.data.link : restaurant.image,
+              image: file ? img.data.link : restaurant.image
             })
               .then((restaurant) => {
                 req.flash('success_messages', 'restaurant was successfully to update')
