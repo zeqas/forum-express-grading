@@ -2,13 +2,14 @@ const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const db = require('../models')
+const User = db.User
 const Restaurant = db.Restaurant
 
 const adminController = {
   // Read
   getRestaurants: (req, res) => {
     return Restaurant.findAll({ raw: true }).then(restaurants => {
-      return res.render('admin/restaurants', { restaurants: restaurants })
+      return res.render('admin/restaurants', { restaurants })
     })
   },
   // Create
@@ -122,7 +123,69 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
       })
-  }
+  },
+  // switch Users
+  getUsers: (req, res) => {
+    return User.findAll({ raw: true }).then(users => {
+      return res.render('admin/users', { users })
+    })
+  },
+  // toggleAdmin
+  toggleAdmin: (req, res) => {
+    // const id = req.params.id
+    // User.findByPk(id)
+    //   .then(user => {
+    //     switch (user.isAdmin) {
+    //       case true:
+    //         user.update({
+    //           isAdmin : false
+    //         })
+    //         req.flash('success_messages', 'admin change to user successfully')
+    //         res.redirect('/admin/users')
+    //         break
+    //       case false:
+    //         user.update({
+    //           isAdmin: true
+    //         })
+    //         req.flash('success_messages', 'user change to admin successfully')
+    //         res.redirect('/admin/users')
+    //         break
+    //     }
+    //   })
+
+    // if (isAdmin) {
+    //   return User.findByPk(req.params.id)
+    //     .then((user) => {
+    //       user.update({
+    //         isAdmin: isAdmin ? false : true
+    //       })
+    //         .then((user) => {
+    //           req.flash('success_messages', 'user was successfully to update')
+    //           res.redirect('/admin/users')
+    //         })
+    //     })
+    // }
+    const id = req.params.id
+    User.findByPk(id)
+      .then((user) => {
+        const isAdmin = user.isAdmin ? false : true
+        user.update({
+          isAdmin
+        })
+          .then((user) => {
+            let message = ''
+            if (user.isAdmin) {
+              message = '權限已設定為 Admin'
+            } else { message = '權限已設定為 User' }
+            req.flash('success_messages', message)
+            res.redirect('/admin/users')
+          })
+          .catch(error => console.log(error))
+      })
+      .catch(err => console.log(err))
+
+  },
+
 }
 
 module.exports = adminController
