@@ -132,39 +132,6 @@ const adminController = {
   },
   // toggleAdmin
   toggleAdmin: (req, res) => {
-    // const id = req.params.id
-    // User.findByPk(id)
-    //   .then(user => {
-    //     switch (user.isAdmin) {
-    //       case true:
-    //         user.update({
-    //           isAdmin : false
-    //         })
-    //         req.flash('success_messages', 'admin change to user successfully')
-    //         res.redirect('/admin/users')
-    //         break
-    //       case false:
-    //         user.update({
-    //           isAdmin: true
-    //         })
-    //         req.flash('success_messages', 'user change to admin successfully')
-    //         res.redirect('/admin/users')
-    //         break
-    //     }
-    //   })
-
-    // if (isAdmin) {
-    //   return User.findByPk(req.params.id)
-    //     .then((user) => {
-    //       user.update({
-    //         isAdmin: isAdmin ? false : true
-    //       })
-    //         .then((user) => {
-    //           req.flash('success_messages', 'user was successfully to update')
-    //           res.redirect('/admin/users')
-    //         })
-    //     })
-    // }
     const id = req.params.id
     User.findByPk(id)
       .then((user) => {
