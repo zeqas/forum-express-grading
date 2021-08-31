@@ -4,11 +4,19 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const db = require('../models')
 const User = db.User
 const Restaurant = db.Restaurant
+const Category = db.Category
 
 const adminController = {
   // Read
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({ raw: true }).then(restaurants => {
+    return Restaurant.findAll({
+      raw: true,
+      nest: true,
+      include: [Category] // include 拉關聯資料
+    }).then(restaurants => {
+      console.log('-------------------------')
+      console.log(restaurants) // 加入 console 觀察資料的變化
+      console.log('-------------------------')
       return res.render('admin/restaurants', { restaurants })
     })
   },
@@ -55,10 +63,13 @@ const adminController = {
   // Read the restaurant
   getRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id, {
-      raw: true
+      include: [Category]
     }).then(restaurant => {
+      console.log('-------------------------')
+      console.log(restaurant) // 加入 console 觀察資料的變化
+      console.log('-------------------------')
       return res.render('admin/restaurant', {
-        restaurant: restaurant
+        restaurant: restaurant.toJSON()
       })
     })
   },
