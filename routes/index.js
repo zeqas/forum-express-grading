@@ -65,8 +65,13 @@ module.exports = (app, passport) => {
 
   app.get('/logout', userController.logout)
   
-  // Category
+  // Category - Read
   app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
 
+  // Category - Create
   app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
+
+  // Category - Update
+  app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
+  app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
 }
