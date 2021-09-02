@@ -88,34 +88,20 @@ const userController = {
     // }
 
     const { file } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        return User.findByPk(id)
-          .then((user) => {
-            user.update({
-              name,
-              image: file ? img.data.link : user.image
-            })
-              .then((restaurant) => {
-                req.flash('success_messages', 'Your profile was successfully up-to-date')
-                res.redirect(`/users/${id}`)
-              })
-          })
-      })
-    } else {
+    imgur.setClientID(IMGUR_CLIENT_ID)
+    imgur.upload(file.path, (err, img) => {
       return User.findByPk(id)
         .then((user) => {
           user.update({
             name,
-            image: user.image
+            image: file ? img.data.link : user.image
           })
-            .then((user) => {
+            .then((restaurant) => {
               req.flash('success_messages', 'Your profile was successfully up-to-date')
               res.redirect(`/users/${id}`)
             })
         })
-    }
+    })
   }
 }
 
