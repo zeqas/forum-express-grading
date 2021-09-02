@@ -1,4 +1,8 @@
 const bcrypt = require('bcryptjs')
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const helper = require('../_helpers')
+
 const db = require('../models')
 const User = db.User
 
@@ -44,6 +48,74 @@ const userController = {
     req.flash('success_messages', '登出成功！')
     req.logout()
     res.redirect('/signin')
+  },
+  // User Profile
+  getUser: (req, res) => {
+    const id = req.params.id
+    return User.findByPk(id).then(user => {
+      console.log('-------------------------')
+      console.log(user) // 加入 console 觀察資料的變化
+      console.log('-------------------------')
+      console.log('-------------------------')
+      return res.render('user', {
+        user: user.toJSON()
+      })
+    })
+  },
+
+  editUser: (req, res) => {
+    const id = req.params.id
+    return User.findByPk(id, { raw: true })
+    .then(user => {
+      res.render('userEdit', { user })
+    })
+    .catch(err => console.log(err))
+  },
+
+  putUser: (req, res) => {
+    const { name } = req.body
+    const id = req.params.id
+    
+    if (Number(id) !== helper.getUser(req).id) {
+      req.flash('error_messages', "cannot edit other user's profile")
+      return res.redirect('back')
+    }
+    
+    // if (!name) {
+    //   console.log(name)
+    //   req.flash('error_messages', "name didn't exist")
+    //   return res.redirect('back')
+    // }
+
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        return User.findByPk(id)
+          .then((user) => {
+            user.update({
+              name,
+              image: file ? img.data.link : user.image
+            })
+              .then((restaurant) => {
+                req.flash('success_messages', 'Your profile was successfully up-to-date')
+                res.redirect(`/users/${id}`)
+              })
+          })
+      })
+    } else {
+      return User.findByPk(id)
+        .then((user) => {
+          user.update({
+            name,
+            image: user.image
+          })
+            .then((user) => {
+              req.flash('success_messages', 'Your profile was successfully up-to-date')
+              res.redirect(`/users/${id}`)
+            })
+        })
+    }
   }
 }
 

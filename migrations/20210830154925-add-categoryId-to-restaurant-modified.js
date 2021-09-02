@@ -9,12 +9,12 @@ module.exports = {
         table: 'Categories',
         field: 'id'
       },
-      onDelete: 'cascade',
+      onDelete: 'cascade', // 移除外鍵
       onUpdate: 'cascade'
     })
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('Restaurants', 'CategoryId')
+    await queryInterface.removeConstraint('Restaurants', 'CategoryId')
   }
 }

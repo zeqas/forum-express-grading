@@ -15,7 +15,8 @@ module.exports = {
       isAdmin: false,
       name: 'user1',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      image: 'https://api.thecatapi.com/v1/images/search'
     }, {
       email: 'user2@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
