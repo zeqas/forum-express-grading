@@ -39,6 +39,8 @@ module.exports = (app, passport) => {
 
   // Read
   app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
+  // Read - Dashboard
+  app.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
 
   // Update
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
