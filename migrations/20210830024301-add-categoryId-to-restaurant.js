@@ -4,17 +4,12 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('Restaurants', 'CategoryId', {
       type: Sequelize.INTEGER,
-    }),
-      await queryInterface.addConstraint('Restaurants', {
-        fields: ['CategoryId'],
-        type: 'foreign key',
-        references: {
-          table: 'Categories',
-          field: 'id'
-        },
-        onDelete: 'cascade', 
-        onUpdate: 'cascade'
-      });
+      allowNull: false,
+      reference: {
+        model: 'Categories',
+        key: 'id'
+      }
+    })
   },
 
   down: async (queryInterface, Sequelize) => {
