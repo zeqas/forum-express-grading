@@ -14,9 +14,6 @@ const adminController = {
       nest: true,
       include: [Category] // include 拉關聯資料
     }).then(restaurants => {
-      // console.log('-------------------------')
-      // console.log(restaurants) // 加入 console 觀察資料的變化
-      // console.log('-------------------------')
       return res.render('admin/restaurants', { restaurants })
     })
   },
@@ -74,9 +71,6 @@ const adminController = {
     return Restaurant.findByPk(req.params.id, {
       include: [Category]
     }).then(restaurant => {
-      console.log('-------------------------')
-      console.log(restaurant) // 加入 console 觀察資料的變化
-      console.log('-------------------------')
       return res.render('admin/restaurant', {
         restaurant: restaurant.toJSON()
       })
@@ -89,7 +83,6 @@ const adminController = {
       nest: true
     }).then(categories => {
       return Restaurant.findByPk(req.params.id).then(restaurant => {
-        console.log(restaurant.toJSON())
         return res.render('admin/create', {
           categories: categories,
           restaurant: restaurant.toJSON()
