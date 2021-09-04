@@ -74,7 +74,7 @@ const userController = {
           ...r.dataValues,
           restaurantImage: r.dataValues.Restaurant.image
         }))
-        
+
         Restaurant.findAll({
           raw: true,
           nest: true,
@@ -122,7 +122,7 @@ const userController = {
           .then((user) => {
             user.update({
               name,
-              image: file ? img.data.link : restaurant.image,
+              image: file ? img.data.link : user.image
             }).then((user) => {
               req.flash('success_messages', 'user was successfully to update')
               res.redirect(`/users/${id}`)
@@ -134,7 +134,7 @@ const userController = {
         .then((user) => {
           user.update({
             name,
-            image: user.image,
+            image: user.image
           }).then((user) => {
             req.flash('success_messages', 'user was successfully to update')
             res.redirect(`/users/${id}`)
