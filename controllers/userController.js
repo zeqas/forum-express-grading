@@ -5,6 +5,8 @@ const helper = require('../_helpers')
 
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 
 const userController = {
   signUpPage: (req, res) => {
@@ -52,15 +54,46 @@ const userController = {
   // User Profile
   getUser: (req, res) => {
     const id = req.params.id
-    return User.findByPk(id).then(user => {
-      console.log('-------------------------')
-      console.log(user) // 加入 console 觀察資料的變化
-      console.log('-------------------------')
-      console.log('-------------------------')
-      return res.render('user', {
-        user: user.toJSON()
-      })
+    const loginUserId = helper.getUser(req).id
+    const whereQuery = {}
+
+    if (req.query.restaurantId) {
+      restaurantId = Number(req.query.userId)
+      whereQuery.userId = restaurantId
+    }
+
+    // 尋找相關評論
+    Comment.findAndCountAll({
+      include: Restaurant,
+      where: { UserId: id }
     })
+      .then((result) => {
+        const commentNum = result.count
+        const commentRestaurants = result.rows
+        const data = commentRestaurants.map(r => ({
+          ...r.dataValues,
+          restaurantImage: r.dataValues.Restaurant.image
+        }))
+        
+        Restaurant.findAll({
+          raw: true,
+          nest: true,
+          where: whereQuery
+        }).then((restaurants) => {
+          User.findByPk(id)
+            .then((user) => {
+              const userProfile = user.toJSON()
+              return res.render('user', {
+                data,
+                restaurants: data,
+                userProfile,
+                loginUserId,
+                commentNum,
+              })
+            })
+        })
+      })
+      .catch(err => console.log(err))
   },
 
   editUser: (req, res) => {
@@ -80,28 +113,34 @@ const userController = {
       req.flash('error_messages', "cannot edit other user's profile")
       return res.redirect('back')
     }
-    
-    // if (!name) {
-    //   console.log(name)
-    //   req.flash('error_messages', "name didn't exist")
-    //   return res.redirect('back')
-    // }
 
     const { file } = req
-    imgur.setClientID(IMGUR_CLIENT_ID)
-    imgur.upload(file.path, (err, img) => {
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        return User.findByPk(id)
+          .then((user) => {
+            user.update({
+              name,
+              image: file ? img.data.link : restaurant.image,
+            }).then((user) => {
+              req.flash('success_messages', 'user was successfully to update')
+              res.redirect(`/users/${id}`)
+            })
+          })
+      })
+    } else {
       return User.findByPk(id)
         .then((user) => {
           user.update({
             name,
-            image: file ? img.data.link : user.image
+            image: user.image,
+          }).then((user) => {
+            req.flash('success_messages', 'user was successfully to update')
+            res.redirect(`/users/${id}`)
           })
-            .then((restaurant) => {
-              req.flash('success_messages', 'Your profile was successfully up-to-date')
-              res.redirect(`/users/${id}`)
-            })
         })
-    })
+    }
   }
 }
 

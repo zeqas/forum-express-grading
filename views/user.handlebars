@@ -1,41 +1,39 @@
-
-{{#if user}}
-  <form action="/users/{{user.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
-  
-  <div class="row">
-    <div class="col-md-12">  
-      <div class="col-md-4">
-        <img class="img-responsive center-block" 
-        {{#if user.image}}
-        src="{{user.image}}" {{else}} src="http://www.freeiconspng.com/uploads/profile-icon-9.png" {{/if}} style="width: 250px;margin-bottom: 25px;">
-      </div>
-      <div class="col-md-8">
-        <h1>{{user.name}}</h1>
-        <p>{{user.email}}</p>
-        {{#if user}}
-          <form action="/users/{{user.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
-            <button type="button" class="btn btn-link">
-              <a href="/users/{{user.id}}/edit">Edit</a>
-            </button>
-          </form>
-        {{/if}}
-      </div>
+ <div class="row">
+  <div class="col-md-12 d-flex">
+    <div class="col-md-4">
+      <img class="img-responsive center-block" {{#if userProfile.image}} src="{{userProfile.image}}" {{else}}
+        src="http://www.freeiconspng.com/uploads/profile-icon-9.png" {{/if}} style="width: 250px;margin-bottom: 25px;">
+    </div>
+    <div class="col-md-8">
+      <h1>{{userProfile.name}}</h1>
+      <p>{{userProfile.email}}</p>
+      <p>{{commentNum}} 已評論餐廳</p>
+      {{#ifCond loginUserId userProfile.id}}
+      <button type="button" class="btn btn-link">
+        <a href="/users/{{loginUserId}}/edit" class="btn btn-primary">Edit</a>
+      </button>
+      {{/ifCond}}
     </div>
   </div>
-  {{else}}
-  <form action="/users" method="POST" enctype="multipart/form-data">
 
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{user.name}}">
+  <div class="card">
+    <div class="card-header"> 
+      {{commentNum}} 已評論餐廳 
+    </div>
+
+    <div class="card-body">
+      
+        {{#each restaurants}} 
+        <a href="/restaurants/{{this.id}}">
+          <img class="img" src="{{this.restaurantImage}}" style="width: 70px; height: 70px">
+        </a>
+        {{/each}}
+      
+    </div>
   </div>
   
-  <button type="submit" class="btn btn-primary">Submit</button>
-  <div class="form-group">
-    <label for="image">Image</label>
-    <input type="file" class="form-control-file" id="image" name="image">
-  </div>
-  </form>
-{{/if}}
+</div>
 
-<a href="javascript:history.back()">回上一頁</a>
+<div class="d-flex justify-content-end my-3">
+  <a href="javascript:history.back()">回上一頁</a>
+</div>
