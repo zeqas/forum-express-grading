@@ -100,8 +100,10 @@ module.exports = (app, passport) => {
   app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
   // Like
   app.post('/like/:restaurantId', authenticated, userController.addLike)
-
   app.delete('/like/:restaurantId', authenticated, userController.removeLike)
+  // Follow
+  app.post('/following/:userId', authenticated, userController.addFollowing)
+  app.delete('/following/:userId', authenticated, userController.removeFollowing)
 
 
 }
