@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const imgur = require('imgur-node-api')
-const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+
 const helper = require('../_helpers')
 
 const db = require('../models')
@@ -9,6 +9,7 @@ const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
 const Like = db.Like
+const IMGUR_CLIENT_ID = 'a05a96597689f57'
 
 const userController = {
   signUpPage: (req, res) => {
@@ -81,7 +82,7 @@ const userController = {
           raw: true,
           nest: true,
           where: whereQuery
-        }).then((restaurants) => {
+        }).then(() => {
           User.findByPk(id)
             .then((user) => {
               const userProfile = user.toJSON()
@@ -125,7 +126,7 @@ const userController = {
             user.update({
               name,
               image: file ? img.data.link : user.image
-            }).then((user) => {
+            }).then(() => {
               req.flash('success_messages', 'user was successfully to update')
               res.redirect(`/users/${id}`)
             })
@@ -137,7 +138,7 @@ const userController = {
           user.update({
             name,
             image: user.image
-          }).then((user) => {
+          }).then(() => {
             req.flash('success_messages', 'user was successfully to update')
             res.redirect(`/users/${id}`)
           })
