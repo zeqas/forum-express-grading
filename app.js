@@ -44,6 +44,7 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)
 })
 
-require('./routes')(app, passport)
+// 分層，所以不需要passport
+require('./routes')(app)
 
 module.exports = app
