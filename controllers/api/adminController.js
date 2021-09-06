@@ -6,8 +6,8 @@ const adminService = require('../../services/adminService.js')
 
 const adminController = {
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({ include: [Category] }).then(restaurants => {
-      return res.json({ restaurants: restaurants })
+    adminService.getRestaurants(req, res, (data) => {
+      return res.json(data)
     })
   }
 }
