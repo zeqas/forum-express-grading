@@ -94,7 +94,7 @@ const userController = {
                 loginUserId,
                 commentNum,
               })
-            })
+            }).catch(err => console.log(err))
         })
       })
       .catch(err => console.log(err))
